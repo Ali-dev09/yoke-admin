@@ -1,0 +1,199 @@
+/* ProductForm.css */
+
+/* الحاوية الرئيسية للنموذج */
+.form-container {
+  direction: rtl;
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #e8bbbb;
+  border: 1px solid #ffa94d;
+  border-radius: 10px;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 0 10px rgba(255, 165, 0, 0.2);
+}
+
+/* العنوان الرئيسي */
+.heading {
+  color: #ff7f00;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* تسميات الحقول */
+.label {
+  display: block;
+  margin-bottom: 5px;
+  color: #e65c00;
+  font-weight: bold;
+}
+
+/* المدخلات (نصوص، أرقام، إلخ) */
+.input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ffcc99;
+}
+
+/* زر الإرسال */
+.button {
+  background-color: #ff8800;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* مدخلات المقاسات */
+.size-input {
+  width: 45%;
+  padding: 8px;
+  margin-bottom: 10px;
+  margin-right: 5px;
+  border-radius: 5px;
+  border: 1px solid #ffcc99;
+}
+
+/* زر إضافة وحذف المقاس */
+.size-button {
+  background-color: #ff7f00;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.product-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+
+.product {
+  padding: 30px;
+  width: 300px;
+  border: 2px solid #000;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.product-name {
+  text-indent: 0;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+  word-break: break-word; /* Prevent long names from overflowing */
+}
+
+.product-description-container {
+  max-height: 150px; /* Limit height */
+  overflow-y: auto; /* Add scroll if needed */
+  padding: 5px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  margin: 5px 0;
+}
+
+.product-description {
+  white-space: pre-wrap; /* Preserve line breaks */
+  word-wrap: break-word; /* Break long words */
+  margin: 0;
+  text-align: right; /* For RTL text */
+}
+
+.product img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  align-self: center; /* Center the image */
+  margin-bottom: 10px;
+}
+
+.product-price,
+.product-origin,
+.product-category {
+  margin: 5px 0;
+  text-align: right; /* For RTL text */
+}
+
+/* Sizes list styling */
+.product ul {
+  padding-right: 20px;
+  margin: 5px 0;
+}
+
+.product li {
+  text-align: right; /* For RTL text */
+}
+
+.products{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  padding: 20px;
+  direction: rtl; /* For Arabic/RTL content */
+}
+
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.auth-form {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.login-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #0056b3;
+}
+
+.admin-dashboard {
+  padding: 2rem;
+}
