@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt'
-import NewProduct from '../schemas/Product.mjs'
+import Product from '../schemas/Product.mjs'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 dotenv.config()
@@ -81,7 +81,7 @@ router.post('/admin/login', async (req, res) => {
 
 router.get('/admin/products', async (req, res) =>{
   try{
-    const products = await NewProduct.find({} , {name:1 , category:1})
+    const products = await Product.find({} , {name:1 , category:1})
     res.json(products)
   }catch(err){
     res.status(500).json({message: 'server error'})
@@ -89,47 +89,54 @@ router.get('/admin/products', async (req, res) =>{
 })
 
 
-router.put('/product/:productId',async (req, res) => {
-  try {
-    const productId = req.params.productId;
-    if (!productId.match(/^[0-9a-fA-F]{24}$/)) {
-      return res.status(400).json({ error: 'Invalid product ID format' });
+router.put('/product/:productId', async (req, res) => {
+    try {
+      const productId = req.params.productId;
+      if (!productId.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(400).json({ error: 'Invalid product ID format' });
+      }
+
+      const product = await Product.findById(productId);
+      if (!product) return res.status(404).json({ error: 'Product not found' });
+
+      // If admin wants to update the image
+      if (req.body.image) {
+        // Delete old image from ImageKit if it has a fileId
+        if (product.imageId) {
+          await imagekit.deleteFile(product.imageId);
+        }
+
+        // Upload new image
+        const uploadResponse = await imagekit.upload({
+          file: req.body.image, // base64 string or file
+          fileName: `${product.id}`
+        });
+
+        product.image = uploadResponse.url;
+        product.imageId = uploadResponse.fileId; // save fileId for future deletions
+      }
+
+      // Update other fields
+      const fieldsToUpdate = ['name','price','description','origin','hasSizes','sizes','category','stock'];
+      fieldsToUpdate.forEach(field => {
+        if (req.body[field] !== undefined) product[field] = req.body[field];
+      });
+
+      await product.save();
+
+      res.json({
+        message: 'Product updated successfully',
+        product
+      });
+
+    } catch (err) {
+      if (err.name === 'ValidationError') {
+        return res.status(400).json({ error: 'Validation error', details: err.message });
+      }
+      res.status(500).json({ error: 'Server error', details: err.message }
+                           );
     }
-
-    const updates = {
-      name: req.body.name,
-      price: req.body.price,
-      description: req.body.description,
-      image: req.body.image,
-      origin: req.body.origin,
-      hasSizes: req.body.hasSizes,
-      sizes: req.body.sizes,
-      category: req.body.category,
-      stock: req.body.stock
-    };
-
-    const product = await NewProduct.findByIdAndUpdate(
-      productId,
-      updates,
-      { new: true, runValidators: true }
-    );
-
-    if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
-    }
-
-    res.json({
-      message: 'Product updated successfully',
-      product
-    });
-  } catch (err) {
-    if (err.name === 'ValidationError') {
-      return res.status(400).json({ error: 'Validation error', details: err.message });
-    }
-    res.status(500).json({ error: 'Server error', details: err.message });
-  }
-});
-
+  });
 // Delete product endpoint
 router.delete('/product/:productId', async (req, res) => {
   try {
@@ -138,7 +145,7 @@ router.delete('/product/:productId', async (req, res) => {
       return res.status(400).json({ error: 'Invalid product ID format' });
     }
 
-    const product = await NewProduct.findByIdAndDelete(productId);
+    const product = await Product.findByIdAndDelete(productId);
     if (!product) {
       return res.status(404).json({ error: 'Product not found' });
     }

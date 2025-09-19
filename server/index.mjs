@@ -11,16 +11,10 @@ import adminRoute from './routers/admin.mjs'
 dotenv.config()
 const port = process.env.PORT || 3000;
 const app = express();
-const allowedHosts = [process.env.CLIENT , process.env.ADMIN]
+const allowedHosts = true
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedHosts.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: true,
   credentials: true
 }));
 
