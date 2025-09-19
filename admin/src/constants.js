@@ -1,2 +1,1 @@
-export const backendUrl = 'https://yoke-server.vercel.app
-  ';
+export const backendUrl = 'https://yoke-server.vercel.app';
